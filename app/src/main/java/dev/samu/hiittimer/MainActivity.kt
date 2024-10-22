@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -455,11 +456,12 @@ fun Work(
             fontSize = 80.sp
         )
         Text(
-            text = "Work",
+            text = "¡Let's go!",
             color = Color.White,
-            fontSize = 50.sp,
+            fontSize = 60.sp,
             modifier = Modifier
                 .padding(36.dp)
+                .graphicsLayer(alpha = 0.5f)
         )
         Button(
             onClick = {
@@ -542,6 +544,7 @@ fun Rest(
             color = Color.White,
             modifier = Modifier
                 .padding(36.dp)
+                .graphicsLayer(alpha = 0.5f)
         )
 
         Button(
@@ -566,13 +569,5 @@ fun Rest(
                 contentDescription = null
             )
         }
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun TabataPreview() {
-    HIITTimerTheme {
-        AppContent(modifier = Modifier)
     }
 }
