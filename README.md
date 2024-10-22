@@ -1,6 +1,6 @@
-# 🏋️‍♂️ Tabata
+# 🏋️‍♂️ HIIT Timer
 
-**Tabata** es una aplicación diseñada para ayudar a los usuarios a realizar entrenamientos de intervalos de alta intensidad (HIIT) utilizando el método Tabata.
+**HIIT Timer** es una aplicación diseñada para ayudar a los usuarios a realizar entrenamientos de intervalos de alta intensidad (HIIT) utilizando el método Tabata.
 
 ## 🚀 Funcionalidades
 
