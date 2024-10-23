@@ -45,8 +45,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 import dev.samu.hiittimer.ui.theme.HIITTimerTheme
-import java.security.AccessController.getContext
-import kotlin.coroutines.coroutineContext
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -570,4 +568,10 @@ fun Rest(
             )
         }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+fun AppContentPreview(){
+    AppContent(modifier = Modifier)
 }
