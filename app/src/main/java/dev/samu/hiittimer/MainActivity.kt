@@ -412,6 +412,7 @@ fun Work(
 
     var currentIcon by remember { mutableStateOf(R.drawable.button_start) }
 
+
     val miCounterDown = remember {
         CounterDown(tiempoWork) { newValue ->
             theCounter = newValue
@@ -422,6 +423,9 @@ fun Work(
                 }
             }
         }
+    }
+    LaunchedEffect(Unit) {
+        miCounterDown.start()
     }
 
     val context = LocalContext.current
@@ -434,7 +438,7 @@ fun Work(
         mediaPlayer?.start()
     }
 
-    miCounterDown.start()
+//    miCounterDown.start()
 
     Column(
         modifier = Modifier
@@ -506,6 +510,9 @@ fun Rest(
             }
         }
     }
+    LaunchedEffect(Unit) {
+        miCounterDown.start()
+    }
 
     val context = LocalContext.current
 
@@ -517,7 +524,7 @@ fun Rest(
         mediaPlayer?.start()
     }
 
-    miCounterDown.start()
+//    miCounterDown.start()
 
     Column(
         modifier = Modifier
