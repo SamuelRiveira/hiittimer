@@ -28,3 +28,7 @@
 1. Clona el repositorio en tu máquina local:
    ```bash
    git clone https://github.com/tu_usuario/Tabata.git
+👥 Creadores de la aplicación:
+Samuel
+Álvaro
+Unai
