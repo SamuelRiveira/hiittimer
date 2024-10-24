@@ -2,6 +2,9 @@ package dev.samu.hiittimer
 
 import android.media.MediaPlayer
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -24,6 +27,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -418,12 +422,12 @@ fun GetReady(
     modifier: Modifier = Modifier,
     onGetReadyCompleted: () -> Unit // Callback para cuando termine el tiempo de GetReady
 ) {
-    val tiempoGetReady = 5
+    val tiempoGetReady = 10
     var theCounter by remember { mutableStateOf(String.format("%02d:%02d", tiempoGetReady / 60, tiempoGetReady % 60)) }
 
     val context = LocalContext.current
 
-    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+    val mediaPlayer = remember { MediaPlayer.create(context, R.raw.pitidoporsegundo) }
 
     val miCounterDown = remember {
         CounterDown(tiempoGetReady, true, sonido = mediaPlayer) { newValue ->
@@ -437,10 +441,23 @@ fun GetReady(
         }
     }
 
-    mediaPlayer = MediaPlayer.create(context, R.raw.pitidoporsegundo)
+
+    val handler = Handler(Looper.getMainLooper())
+    var repetitionCount = 0
 
     LaunchedEffect(Unit) {
-        mediaPlayer?.start()
+        mediaPlayer.setOnCompletionListener {
+            repetitionCount++
+            if (repetitionCount < tiempoGetReady) {
+                handler.postDelayed({
+                    mediaPlayer.start()
+                }, 0) // Retraso de 500 ms antes de la siguiente repetición
+            } else {
+                mediaPlayer.release() // Libera el media player después de usarlo
+            }
+        }
+
+        mediaPlayer.start() // Inicia la primera reproducción
     }
 
     miCounterDown.start()
@@ -499,6 +516,9 @@ fun Work(
         mediaPlayer?.start()
         miCounterDown.start()
     }
+
+
+
 
     Column(
         modifier = Modifier
