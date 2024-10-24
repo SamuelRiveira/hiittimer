@@ -350,6 +350,7 @@ fun PantallaPrincipal(
 fun AppContent(modifier: Modifier) {
     var showWork by remember { mutableStateOf(false) }
     var showPantallaPrincipal by remember { mutableStateOf(true) }
+    var showGetReady by remember { mutableStateOf(false) }
     var remainingSets by remember { mutableStateOf(sets) }
     var isLastSet by remember { mutableStateOf(false) }
     var resetCompleted by remember { mutableStateOf(false) }
@@ -364,8 +365,8 @@ fun AppContent(modifier: Modifier) {
         }
     }
 
-    // Para manejar la finalización del reset
-    val handleResetCompletion = {
+    // Para manejar la finalización del rest
+    val handleRestCompletion = {
         if (!isLastSet) {
             if (!resetCompleted) {
                 remainingSets--
@@ -381,13 +382,19 @@ fun AppContent(modifier: Modifier) {
         }
     }
 
+    // Manejo del GetReady
+    val handleGetReadyCompletion = {
+        showGetReady = false
+        showWork = true
+    }
+
     if (showPantallaPrincipal) {
         PantallaPrincipal(
             modifier = modifier,
             onStartClicked = {
                 remainingSets = sets
                 showPantallaPrincipal = false
-                showWork = true
+                showGetReady = true
                 resetCompleted = false
             }
         )
@@ -395,11 +402,69 @@ fun AppContent(modifier: Modifier) {
         tiempoWork = 0
         tiempoRest = 0
     } else {
-        if (showWork) {
+        if (showGetReady) {
+            GetReady(modifier = Modifier, onGetReadyCompleted = handleGetReadyCompletion)
+        } else if (showWork) {
             Work(modifier = Modifier, onWorkCompleted = handleWorkCompletion)
         } else {
-            Rest(modifier = Modifier, onResetCompleted = handleResetCompletion)
+            Rest(modifier = Modifier, onRestCompleted = handleRestCompletion)
         }
+    }
+}
+
+
+@Composable
+fun GetReady(
+    modifier: Modifier = Modifier,
+    onGetReadyCompleted: () -> Unit // Callback para cuando termine el tiempo de GetReady
+) {
+    val tiempoGetReady = 5
+    var theCounter by remember { mutableStateOf(String.format("%02d:%02d", tiempoGetReady / 60, tiempoGetReady % 60)) }
+
+    val context = LocalContext.current
+
+    var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
+
+    val miCounterDown = remember {
+        CounterDown(tiempoGetReady, true, sonido = mediaPlayer) { newValue ->
+            theCounter = newValue
+            CoroutineScope(Dispatchers.Main).launch {
+                if (newValue == "00:00") {
+                    delay(1000) // Espera 1 segundo (1000 milisegundos)
+                    onGetReadyCompleted() // Llama a onWorkCompleted después de la espera
+                }
+            }
+        }
+    }
+
+    mediaPlayer = MediaPlayer.create(context, R.raw.pitidoporsegundo)
+
+    LaunchedEffect(Unit) {
+        mediaPlayer?.start()
+    }
+
+    miCounterDown.start()
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color(0xFFFF9800)),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = theCounter,
+            color = Color.White,
+            fontSize = 80.sp
+        )
+        Text(
+            text = "Get Ready",
+            color = Color.White,
+            fontSize = 60.sp,
+            modifier = Modifier
+                .padding(36.dp)
+                .graphicsLayer(alpha = 0.5f)
+        )
     }
 }
 
@@ -428,13 +493,12 @@ fun Work(
 
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
-    mediaPlayer = MediaPlayer.create(context, R.raw.tortuga)
+    mediaPlayer = MediaPlayer.create(context, R.raw.trabajo)
 
     LaunchedEffect(Unit) {
         mediaPlayer?.start()
+        miCounterDown.start()
     }
-
-    miCounterDown.start()
 
     Column(
         modifier = Modifier
@@ -489,7 +553,7 @@ fun Work(
 @Composable
 fun Rest(
     modifier: Modifier = Modifier,
-    onResetCompleted: () -> Unit // Callback para cuando termine el tiempo de Reset
+    onRestCompleted: () -> Unit // Callback para cuando termine el tiempo de Reset
 ) {
     var theCounter by remember { mutableStateOf(String.format("%02d:%02d", tiempoRest / 60, tiempoRest % 60)) }
 
@@ -501,7 +565,7 @@ fun Rest(
             CoroutineScope(Dispatchers.Main).launch {
                 if (newValue == "00:00") {
                     delay(1000) // Espera 1 segundo (1000 milisegundos)
-                    onResetCompleted() // Cuando el contador llegue a 0, llamamos a onResetCompleted
+                    onRestCompleted() // Cuando el contador llegue a 0, llamamos a onResetCompleted
                 }
             }
         }
@@ -515,9 +579,8 @@ fun Rest(
 
     LaunchedEffect(Unit) {
         mediaPlayer?.start()
+        miCounterDown.start()
     }
-
-    miCounterDown.start()
 
     Column(
         modifier = Modifier
