@@ -634,27 +634,32 @@ fun Rest(
                 .graphicsLayer(alpha = 0.5f)
         )
 
-        Button(
-            onClick = {
-                miCounterDown.toggle()
+        Row {
+            Button(
+                onClick = {
+                    miCounterDown.toggle()
+                    currentIcon =
+                        if (currentIcon == R.drawable.button_start) R.drawable.button_pause else R.drawable.button_start
+                },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(Color.White),
+                modifier = Modifier.size(70.dp)
+            ) {
+                Image(painter = painterResource(currentIcon), contentDescription = null)
+            }
+            Spacer(modifier = Modifier.size(16.dp))
+            // Botón de reset
+            Button(
+                onClick = {
+                    miCounterDown.reset() // Llama al método reset
+                },
+                modifier = Modifier.size(70.dp),
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(Color.White),
 
-                if (currentIcon == R.drawable.button_start) {
-                    currentIcon = R.drawable.button_pause
-                } else {
-                    currentIcon = R.drawable.button_start
-                }
-            },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
-                Color.White
-            ),
-            modifier = Modifier
-                .size(70.dp)
-        ) {
-            Image(
-                painter = painterResource(currentIcon),
-                contentDescription = null
-            )
+                ) {
+                Image(painter = painterResource(R.drawable.button_reset), contentDescription = null)
+            }
         }
     }
 }
