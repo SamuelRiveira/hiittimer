@@ -451,7 +451,7 @@ fun GetReady(
             if (repetitionCount < tiempoGetReady) {
                 handler.postDelayed({
                     mediaPlayer.start()
-                }, 0) // Retraso de 500 ms antes de la siguiente repetición
+                }, 0)
             } else {
                 mediaPlayer.release() // Libera el media player después de usarlo
             }
