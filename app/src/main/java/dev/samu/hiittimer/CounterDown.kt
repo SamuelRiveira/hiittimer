@@ -65,7 +65,6 @@ class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaP
         remainingTime = initialTime  // Restablecer el tiempo restante al tiempo inicial
         loquehacealhacertick(formatTime(initialTime / 1000))  // Actualizar la visualización al tiempo inicial
         counterState = false  // Asegurarse de que el estado sea "no corriendo"
-        myCounter?.start()
     }
 
     // Función para formatear el tiempo a "MM:SS"
