@@ -7,7 +7,7 @@ import android.util.Log
 class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaPlayer? = null, var loquehacealhacertick: (String) -> Unit) {
     private var counterState: Boolean = false  // Indica si el temporizador está corriendo
     private var remainingTime: Long = ((segundos + 1) * 1000L)  // Tiempo restante en milisegundos
-    private val initialTime: Long = remainingTime  // Guarda el tiempo inicial
+    private val initialTime: Long = remainingTime
     val pitido = pitido
 
     private var myCounter: CountDownTimer? = null
@@ -21,7 +21,7 @@ class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaP
         myCounter = object : CountDownTimer(timeInMillis, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 remainingTime = millisUntilFinished
-                if (pitido) {
+                if (pitido){
                     Log.i("errorr", "Entra")
                     sonido?.start()
                 }
