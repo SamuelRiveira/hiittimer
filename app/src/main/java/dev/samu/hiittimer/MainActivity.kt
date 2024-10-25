@@ -14,6 +14,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -545,27 +546,32 @@ fun Work(
                 .padding(36.dp)
                 .graphicsLayer(alpha = 0.5f)
         )
-        Button(
-            onClick = {
-                miCounterDown.toggle()
+        Row {
+            Button(
+                onClick = {
+                    miCounterDown.toggle()
+                    currentIcon =
+                        if (currentIcon == R.drawable.button_start) R.drawable.button_pause else R.drawable.button_start
+                },
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(Color.White),
+                modifier = Modifier.size(70.dp)
+            ) {
+                Image(painter = painterResource(currentIcon), contentDescription = null)
+            }
+            Spacer(modifier = Modifier.size(16.dp))
+            // Botón de reset
+            Button(
+                onClick = {
+                    miCounterDown.reset() // Llama al método reset
+                },
+                modifier = Modifier.size(70.dp),
+                shape = CircleShape,
+                colors = ButtonDefaults.buttonColors(Color.White),
 
-                if (currentIcon == R.drawable.button_start) {
-                    currentIcon = R.drawable.button_pause
-                } else {
-                    currentIcon = R.drawable.button_start
-                }
-            },
-            shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
-                Color.White
-            ),
-            modifier = Modifier
-                .size(70.dp)
-        ) {
-            Image(
-                painter = painterResource(currentIcon),
-                contentDescription = null
-            )
+                ) {
+                Image(painter = painterResource(R.drawable.button_reset), contentDescription = null)
+            }
         }
     }
 }
