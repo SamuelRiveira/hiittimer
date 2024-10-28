@@ -107,7 +107,12 @@ fun Rest(navController: NavController) {
                 onClick = {
                     miCounterDown.toggle()
                     currentIcon =
-                        if (currentIcon == R.drawable.button_start) R.drawable.button_pause else R.drawable.button_start
+                        if (isPause) {
+                            R.drawable.button_pause
+                        }
+                        else{
+                            R.drawable.button_start
+                        }
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(Color.White),
@@ -120,6 +125,13 @@ fun Rest(navController: NavController) {
             Button(
                 onClick = {
                     miCounterDown.reset() // Llama al método reset
+                    currentIcon =
+                        if (isPause) {
+                            R.drawable.button_pause
+                        }
+                        else{
+                            R.drawable.button_start
+                        }
                 },
                 modifier = Modifier.size(70.dp),
                 shape = CircleShape,
