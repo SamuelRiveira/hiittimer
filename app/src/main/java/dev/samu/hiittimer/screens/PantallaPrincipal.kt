@@ -44,6 +44,9 @@ fun PantallaPrincipal(navController: NavController) {
     var mediaPlayer by remember { mutableStateOf<MediaPlayer?>(null) }
 
     if (setsFinalizados){
+        tiempoWork = 0
+        tiempoRest = 0
+        sets --
         mediaPlayer = MediaPlayer.create(context, R.raw.finalizado)
         mediaPlayer?.start()
         setsFinalizados = false
