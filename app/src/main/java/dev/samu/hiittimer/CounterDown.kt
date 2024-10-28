@@ -3,6 +3,7 @@ package dev.samu.hiittimer
 import android.media.MediaPlayer
 import android.os.CountDownTimer
 import android.util.Log
+import dev.samu.hiittimer.screens.isPause
 
 class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaPlayer? = null, var loquehacealhacertick: (String) -> Unit) {
     private var counterState: Boolean = false  // Indica si el temporizador está corriendo
@@ -51,12 +52,14 @@ class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaP
         counterState = true
         createTimer(remainingTime)  // Crea un temporizador nuevo desde el tiempo restante
         myCounter?.start()
+        isPause = false
     }
 
     // Pausar el temporizador
     fun pause() {
         counterState = false
         myCounter?.cancel()
+        isPause = true
     }
 
     // Función para resetear el temporizador
@@ -64,7 +67,9 @@ class CounterDown(var segundos: Int, pitido: Boolean = false, val sonido: MediaP
         pause()  // Detener el temporizador si está corriendo
         remainingTime = initialTime  // Restablecer el tiempo restante al tiempo inicial
         loquehacealhacertick(formatTime(initialTime / 1000))  // Actualizar la visualización al tiempo inicial
-        counterState = false  // Asegurarse de que el estado sea "no corriendo"
+        counterState = true
+        myCounter?.start()
+        isPause = false
     }
 
     // Función para formatear el tiempo a "MM:SS"

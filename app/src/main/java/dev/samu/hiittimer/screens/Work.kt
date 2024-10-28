@@ -38,6 +38,8 @@ import dev.samu.hiittimer.CounterDown
 import dev.samu.hiittimer.navigate.AppScreens
 import dev.samu.hiittimer.R
 
+var isPause = false
+
 @Composable
 fun Work(navController: NavController) {
     var theCounter by remember { mutableStateOf(String.format("%02d:%02d", tiempoWork / 60, tiempoWork % 60)) }
@@ -101,7 +103,12 @@ fun Work(navController: NavController) {
                 onClick = {
                     miCounterDown.toggle()
                     currentIcon =
-                        if (currentIcon == R.drawable.button_start) R.drawable.button_pause else R.drawable.button_start
+                        if (isPause) {
+                            R.drawable.button_pause
+                        }
+                        else{
+                            R.drawable.button_start
+                        }
                 },
                 shape = CircleShape,
                 colors = ButtonDefaults.buttonColors(Color.White),
